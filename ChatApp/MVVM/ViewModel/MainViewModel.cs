@@ -1,27 +1,62 @@
-﻿using ChatApp.MVVM.Model;
+﻿using ChatApp.Core;
+using ChatApp.MVVM.Model;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ChatApp.MVVM.ViewModel
 {
-    class MainViewModel
+    class MainViewModel : ObservableObject
     {
         public ObservableCollection<MessageModel> Messages { get; set; }
         public ObservableCollection<ContactModel> Contacts { get; set; }
+        public RelayCommand SendCommand { get; set; }
+
+        private ContactModel _selectedContact;
+
+        public ContactModel SelectedContact
+        {
+            get { return _selectedContact; }
+            set
+            {
+                _selectedContact = value;
+                OnPropertyChanged();
+            }
+
+        }
+
+        private string _message;
+
+        public string Message
+        {
+            get { return _message; }
+            set
+            {
+                _message = value;
+                OnPropertyChanged();
+            }
+
+        }
+
+
         public MainViewModel()
         {
             Messages = new ObservableCollection<MessageModel>();
             Contacts = new ObservableCollection<ContactModel>();
+            SendCommand = new RelayCommand(o =>
+            {
+                Messages.Add(new MessageModel
+                {
+                    Message = Message,
+                    FirstMessage = false
+                });
+                Message = "";
+            });
 
             Messages.Add(new MessageModel
             {
                 Username = "SomeName",
                 UsernameColor = "#409aff",
-                ImageSource = "https://tse1.mm.bing.net/th?id=OIP.dtqKdwsdEUpJauqb0Z4f_QHaJj&pid=Api",
+                ImageSource = "https://tse1.mm.bing.net/th?id=OIP.-JYxqac14UaxnbQlv4YNAQHaHa&pid=Api",
                 Message = "Test message",
                 Time = DateTime.UtcNow,
                 IsNativeOrigin = false,
@@ -32,9 +67,9 @@ namespace ChatApp.MVVM.ViewModel
             {
                 Messages.Add(new MessageModel
                 {
-                    Username = "TestUser",
+                    Username = "SomeName",
                     UsernameColor = "#409aff",
-                    ImageSource = "https://tse1.mm.bing.net/th?id=OIP.dtqKdwsdEUpJauqb0Z4f_QHaJj&pid=Api",
+                    ImageSource = "https://tse1.mm.bing.net/th?id=OIP.Sd02Jhq0RoEJ4IVBWoRr_AHaE7&pid=Api",
                     Message = "Test message",
                     Time = DateTime.UtcNow,
                     IsNativeOrigin = false,
@@ -48,7 +83,7 @@ namespace ChatApp.MVVM.ViewModel
                 {
                     Username = "TestUser ",
                     UsernameColor = "#409aff",
-                    ImageSource = "https://tse1.mm.bing.net/th?id=OIP.dtqKdwsdEUpJauqb0Z4f_QHaJj&pid=Api",
+                    ImageSource = "https://tse1.mm.bing.net/th?id=OIP.Sd02Jhq0RoEJ4IVBWoRr_AHaE7&pid=Api",
                     Message = "Test message",
                     Time = DateTime.UtcNow,
                     IsNativeOrigin = true
@@ -59,7 +94,7 @@ namespace ChatApp.MVVM.ViewModel
             {
                 Username = "TestUser",
                 UsernameColor = "#409aff",
-                ImageSource = "https://tse1.mm.bing.net/th?id=OIP.dtqKdwsdEUpJauqb0Z4f_QHaJj&pid=Api",
+                ImageSource = "https://tse1.mm.bing.net/th?id=OIP.Sd02Jhq0RoEJ4IVBWoRr_AHaE7&pid=Api",
                 Message = "Last message",
                 Time = DateTime.UtcNow,
                 IsNativeOrigin = true
@@ -70,7 +105,7 @@ namespace ChatApp.MVVM.ViewModel
                 Contacts.Add(new ContactModel
                 {
                     Username = $"TestUser {i}",
-                    ImageSource = "https://tse1.mm.bing.net/th?id=OIP.dtqKdwsdEUpJauqb0Z4f_QHaJj&pid=Api",
+                    ImageSource = "https://tse1.mm.bing.net/th?id=OIP.Sd02Jhq0RoEJ4IVBWoRr_AHaE7&pid=Api",
                     Messages = Messages
                 });
             }
